@@ -285,7 +285,7 @@
 
             transform-style: preserve-3d;
 
-            transition: .8s;
+            transition: transform .8s ease;
 
             cursor: pointer;
 
@@ -297,17 +297,6 @@
 
         }
 
-        .card:hover {
-
-            transform: translateY(-6px);
-
-        }
-
-        .card:active {
-
-            transform: scale(.96);
-
-        }
 
         .front,
         .back {
@@ -505,23 +494,7 @@
             z-index: 30;
         }
 
-        .video-modal iframe {
-
-            width: min(380px, 92vw);
-
-            aspect-ratio: 9/16;
-
-            height: auto;
-
-            border: none;
-
-            border-radius: 20px;
-
-            background: black;
-
-        }
-
-        .video-close {
+        .video-modal .video-close {
             position: absolute;
             top: 20px;
             right: 30px;
@@ -556,6 +529,12 @@
             backdrop-filter: blur(10px);
 
             transition: .25s;
+
+            touch-action: manipulation;
+
+            -webkit-user-select: none;
+
+            user-select: none;
 
         }
 
@@ -615,7 +594,7 @@
 
             font-size: 14px;
 
-            z-index: 99;
+            z-index: 5;
 
         }
 
@@ -733,9 +712,10 @@
     </div>
 
     <div class="video-modal" id="videoModal" onclick="closeVideo()">
-        <div class="video-close">✖</div>
-        <iframe id="birthdayVideo" src="https://youtube.com/shorts/UPL5MsE3KA0?si=Ai9YbuCexZzlbMn2"
-            allow="autoplay; encrypted-media" allowfullscreen>
+
+        <iframe id="birthdayVideo" src="https://www.youtube.com/embed/UPL5MsE3KA0?autoplay=1&rel=0" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
         </iframe>
     </div>
 
@@ -787,7 +767,15 @@
         let flippedCount = 0;
 
         function cutRibbon() {
-            document.querySelector(".ribbon-wrapper").style.display = "none";
+            const ribbon = document.querySelector(".ribbon-wrapper");
+
+            ribbon.style.opacity = "0";
+
+            setTimeout(() => {
+
+                ribbon.style.display = "none";
+
+            }, 500);
             document.querySelector(".main").style.display = "flex";
             typeWriter(`Happy Birthday ${name} 🎂`);
             generateCards();
@@ -872,10 +860,19 @@
         }
 
         function closeVideo() {
-            let modal = document.getElementById("videoModal");
-            let iframe = document.getElementById("birthdayVideo");
+
+            const modal = document.getElementById("videoModal");
+
+            const iframe = document.getElementById("birthdayVideo");
+
             modal.style.display = "none";
-            iframe.src = iframe.src;
+
+            const src = iframe.src;
+
+            iframe.src = "";
+
+            iframe.src = src;
+
         }
 
         function toggleMusic() {
