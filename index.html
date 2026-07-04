@@ -3,311 +3,888 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Experience</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Poppins, sans-serif;
+            font-family: 'Poppins', sans-serif;
+
             -webkit-user-select: none;
             user-select: none;
-            -webkit-tap-highlight-color: transparent
+
+            -webkit-touch-callout: none;
+
+            -webkit-tap-highlight-color: transparent;
         }
 
         input {
             -webkit-user-select: text;
-            user-select: text
+            user-select: text;
+        }
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 300px;
+
+            height: 300px;
+
+            background: rgba(255, 255, 255, .12);
+
+            border-radius: 50%;
+
+            top: -100px;
+
+            left: -100px;
+
+            filter: blur(25px);
+
+            animation: float1 8s infinite alternate;
+
+            z-index: -1;
+
+        }
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 280px;
+
+            height: 280px;
+
+            background: rgba(255, 255, 255, .10);
+
+            border-radius: 50%;
+
+            bottom: -80px;
+
+            right: -80px;
+
+            filter: blur(30px);
+
+            animation: float2 10s infinite alternate;
+
+            z-index: -1;
+
+        }
+
+        @keyframes float1 {
+
+            100% {
+
+                transform: translate(90px, 70px);
+
+            }
+
+        }
+
+        @keyframes float2 {
+
+            100% {
+
+                transform: translate(-80px, -60px);
+
+            }
+
         }
 
         body {
-            min-height: 100vh;
             background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #fff;
+            justify-content: flex-start;
+            color: white;
             overflow-x: hidden;
-            padding-bottom: 90px
+            padding-bottom: 90px;
+            position: relative;
         }
 
+        /* Ribbon */
         .ribbon-wrapper {
             position: fixed;
-            inset: 0;
+            width: 100%;
+            height: 100%;
             background: #ff6a88;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100
+            z-index: 10;
+            cursor: pointer;
+            overflow: hidden;
         }
 
         .ribbon {
-            width: min(92%, 650px);
-            height: 100px;
-            border-radius: 60px;
-            background: linear-gradient(45deg, #b30000, #ff1a1a, #b30000);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, .3);
-            animation: f 3s infinite
-        }
 
-        @keyframes f {
-            50% {
-                transform: translateY(-6px)
-            }
+            position: relative;
+
+            width: min(92%, 650px);
+
+            height: clamp(90px, 18vw, 120px);
+
+            padding: 20px;
+
+            background: linear-gradient(45deg, #b30000, #ff1a1a, #b30000);
+
+            border-radius: 999px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            border: 2px solid rgba(255, 255, 255, .3);
+
+            box-shadow:
+
+                0 0 35px rgba(255, 255, 255, .25),
+
+                0 20px 40px rgba(0, 0, 0, .25);
+
+            animation: wave 2.5s ease-in-out infinite;
+
         }
 
         .ribbon-text {
+
             font-size: clamp(20px, 5vw, 30px);
-            font-weight: 700
+
+            font-weight: 700;
+
+            text-align: center;
+
+            padding: 0 15px;
+
+            animation: textWave 2s infinite;
+
         }
 
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes textWave {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Main */
         .main {
+
             display: none;
+
             flex-direction: column;
+
             align-items: center;
+
+            width: 100%;
+
             padding: 80px 18px 140px;
-            width: 100%
+
+            text-align: center;
+
+            animation: fade .5s ease;
+
+        }
+
+        @keyframes fade {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(20px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
         }
 
         .typewriter {
-            font-size: clamp(24px, 6vw, 34px);
+
+            font-size: clamp(24px, 6vw, 36px);
+
             font-weight: 700;
-            margin-bottom: 35px;
-            min-height: 60px;
-            text-align: center
+
+            text-align: center;
+
+            text-shadow:
+
+                0 4px 12px rgba(0, 0, 0, .15);
+
+            line-height: 1.5;
+
+            min-height: 70px;
+
+            margin-bottom: 40px;
+
         }
 
+        /* Grid */
         .grid {
+
             display: grid;
+
             grid-template-columns: repeat(3, 1fr);
+
+            width: min(420px, 100%);
+
             gap: 15px;
-            width: min(420px, 100%)
+
+            margin: auto;
+
         }
 
         .card {
+
             width: 100%;
+
             aspect-ratio: 1;
+
             position: relative;
+
             transform-style: preserve-3d;
-            transition: .8s
+
+            transition: .8s;
+
+            cursor: pointer;
+
         }
 
         .card.flip {
-            transform: rotateY(180deg)
+
+            transform: rotateY(180deg) scale(1.05);
+
+        }
+
+        .card:hover {
+
+            transform: translateY(-6px);
+
+        }
+
+        .card:active {
+
+            transform: scale(.96);
+
         }
 
         .front,
         .back {
+
             position: absolute;
-            inset: 0;
-            border-radius: 18px;
+
+            width: 100%;
+            height: 100%;
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
+            border-radius: 20px;
+
             backface-visibility: hidden;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, .25)
+
+            overflow: hidden;
+
+            background: rgba(255, 255, 255, .92);
+
+            backdrop-filter: blur(12px);
+
+            border: 1px solid rgba(255, 255, 255, .35);
+
+            box-shadow:
+
+                0 12px 30px rgba(0, 0, 0, .15);
+
         }
 
         .front {
-            background: #fff;
+
+            background: white;
+
             color: #ff4081;
-            font-size: 42px
+
+            font-size: clamp(34px, 8vw, 46px);
+
         }
 
         .back {
+
             background: #fff;
+
             color: #ff4081;
+
             transform: rotateY(180deg);
-            padding: 10px;
+
+            padding: 12px;
+
+            font-size: clamp(12px, 3vw, 15px);
+
+            line-height: 1.5;
+
             text-align: center;
-            font-size: 14px
+
         }
 
+        /* Password */
         .password-section {
-            margin-top: 35px;
-            width: min(420px, 100%)
+
+            margin-top: 40px;
+
+            width: min(420px, 100%);
+
         }
 
-        .password-section input,
-        .password-section button {
+        .password-section p {
+
+            margin-bottom: 10px;
+
+        }
+
+        .password-section input {
+
             width: 100%;
+
             padding: 14px;
+
             border: none;
+
             border-radius: 12px;
-            font-size: 16px
+
+            font-size: 16px;
+
+            outline: none;
+
         }
 
         .password-section button {
+
+            width: 100%;
+
+            padding: 14px;
+
             margin-top: 10px;
+
+            border: none;
+
+            border-radius: 12px;
+
             background: #ff4081;
-            color: #fff
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: .25s;
+
         }
 
+        .password-section button:active {
+
+            transform: scale(.97);
+
+        }
+
+        /* Rock Popup */
         .rock-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: #fff;
+            background: white;
             color: #ff4081;
-            padding: 35px;
-            border-radius: 20px;
+            padding: 50px;
+            border-radius: 25px;
+            font-size: 30px;
+            font-weight: 800;
             text-align: center;
-            font-size: 28px;
-            font-weight: 700;
-            transition: .3s;
-            z-index: 20
+            z-index: 20;
+            transition: 0.4s;
         }
 
         .rock-popup.active {
-            transform: translate(-50%, -50%) scale(1)
+
+            transform: translate(-50%, -50%) scale(1);
+
+            animation: popup .4s;
+
+        }
+
+        @keyframes popup {
+
+            0% {
+
+                opacity: 0;
+
+                transform: translate(-50%, -50%) scale(.4);
+
+            }
+
+            70% {
+
+                transform: translate(-50%, -50%) scale(1.08);
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+                transform: translate(-50%, -50%) scale(1);
+
+            }
+
         }
 
         .close-btn {
             position: absolute;
-            top: 8px;
-            right: 12px;
-            cursor: pointer
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 20px;
         }
 
+        /* Video Modal */
         .video-modal {
             position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .85);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 30
+            z-index: 30;
         }
 
-        .video-modal video {
-            width: min(92vw, 420px);
-            border-radius: 18px;
-            background: #000
+        .video-modal iframe {
+
+            width: min(380px, 92vw);
+
+            aspect-ratio: 9/16;
+
+            height: auto;
+
+            border: none;
+
+            border-radius: 20px;
+
+            background: black;
+
         }
 
         .video-close {
             position: absolute;
             top: 20px;
-            right: 24px;
+            right: 30px;
+            color: white;
             font-size: 28px;
-            cursor: pointer
+            cursor: pointer;
         }
 
+        /* Music Button */
         .music-btn {
+
             position: fixed;
-            top: 15px;
-            right: 15px;
-            background: #fff;
+
+            top: 18px;
+
+            right: 18px;
+
+            background: rgba(255, 255, 255, .95);
+
             color: #ff4081;
+
             padding: 12px 18px;
+
             border-radius: 999px;
+
             font-weight: 600;
-            cursor: pointer
+
+            cursor: pointer;
+
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+
+            backdrop-filter: blur(10px);
+
+            transition: .25s;
+
         }
 
+        .music-btn:active {
+
+            transform: scale(.94);
+
+        }
+
+        @media(max-width:480px) {
+
+            .ribbon {
+
+                height: 90px;
+
+
+            }
+
+            footer {
+
+                font-size: 12px;
+
+                padding: 10px;
+
+            }
+
+            .grid {
+
+                gap: 12px;
+
+            }
+
+        }
+
+        /* Footer */
         footer {
+
             position: fixed;
+
             bottom: 0;
+
             width: 100%;
+
             display: flex;
+
             justify-content: center;
-            gap: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, .25)
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding: 15px;
+
+            background: rgba(0, 0, 0, .20);
+
+            backdrop-filter: blur(14px);
+
+            font-size: 14px;
+
+            z-index: 99;
+
         }
 
         .instagram,
         .youtube {
-            background: #fff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+
+            width: 42px;
+            height: 42px;
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
+            border-radius: 50%;
+
+            background: white;
+
             text-decoration: none;
-            font-size: 20px;
-            transition: .25s;
+
+            font-size: 22px;
+
+            transition: .3s;
+
         }
 
         .instagram {
+
             color: #E1306C;
+
         }
 
         .youtube {
-            color: #FF0000;
+
+            color: #ff0000;
+
         }
 
         .instagram:hover,
         .youtube:hover {
-            transform: scale(1.08);
+
+            transform: scale(1.1);
+
+        }
+
+        .instagram {
+
+            color: #E1306C;
+
+        }
+
+        .youtube {
+
+            color: red;
+
+        }
+
+        .instagram:hover,
+        .youtube:hover {
+
+            transform: translateY(-3px) scale(1.08);
+
+        }
+
+        @media(max-width:480px) {
+
+            .ribbon {
+
+                height: 90px;
+
+            }
+
+            .grid {
+
+                gap: 12px;
+
+                width: 95%;
+
+            }
+
+            footer {
+
+                font-size: 12px;
+
+            }
+
         }
     </style>
 </head>
 
 <body>
+
     <div class="ribbon-wrapper" onclick="cutRibbon()">
         <div class="ribbon">
-            <div class="ribbon-text">Click the ribbon to cut it</div>
+            <div class="ribbon-text">🎀 Tap the Ribbon to Begin 🎀</div>
         </div>
     </div>
+
     <div class="main">
         <div class="typewriter" id="typewriter"></div>
         <div class="grid" id="grid"></div>
+
         <div class="password-section">
             <p>Enter secret code to unlock final surprise</p>
             <input type="password" id="secret">
-            <button onclick="checkPassword()">Unlock</button>
+            <button onclick="checkPassword()">🎁 Unlock Surprise</button>
         </div>
     </div>
+
     <div class="rock-popup" id="rockPopup">
-        <div class="close-btn" onclick="closeRock()">✖</div>ROCK ONNN 🎉<br>Its Your Birthday Superstar
+        <div class="close-btn" onclick="closeRock()">✖</div>
+        ROCK ONNN 🎉
+        <br>Its Your Birthday Superstar
     </div>
+
     <div class="video-modal" id="videoModal" onclick="closeVideo()">
         <div class="video-close">✖</div>
-        <video id="birthdayVideo" controls playsinline>
-            <source src="birthday.mp4" type="video/mp4">
-        </video>
+        <iframe id="birthdayVideo" src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&rel=0"
+            allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
     </div>
-    <div class="music-btn" onclick="toggleMusic()">🎵 Music</div>
+
+    <div class="music-btn" onclick="toggleMusic()">
+
+        🎵 Music
+
+    </div>
+
     <audio id="bgMusic" loop>
         <source src="birthday.mp3" type="audio/mp3">
     </audio>
 
     <footer>
+
         <span>2026 © Yarnnest</span>
 
-        <a class="instagram" href="https://www.instagram.com/yarn.nest_official/" target="_blank" title="Instagram">
+        <a class="instagram" href="https://www.instagram.com/yarn.nest_official/" target="_blank">
+
             <i class="fa-brands fa-instagram"></i>
+
         </a>
 
-        <a class="youtube" href="https://youtube.com/@yarn.nest_official?si=dlqEJ5Q9g_EhfTJz" target="_blank"
-            title="YouTube">
+        <a class="youtube" href="https://youtube.com/@yarn.nest_official?si=dlqEJ5Q9g_EhfTJz" target="_blank">
+
             <i class="fa-brands fa-youtube"></i>
+
         </a>
 
     </footer>
 
     <script>
-        const name = "Vaishali", password = "yarnnest";
-        const wishes = ["You are my greatest blessing ❤️", "Your smile is my favorite sight", "More dreams more victories", "Stay fearless always", "You deserve everything beautiful", "Keep glowing brighter", "Endless love for you", "Adventure and success ahead", "Ultimate celebration unlocked"];
+
+        const name = "Vaishali";
+        const password = "yarnnest";
+
+        const wishes = [
+            "You are my greatest blessing ❤️",
+            "Your smile is my favorite sight",
+            "More dreams more victories",
+            "Stay fearless always",
+            "You deserve everything beautiful",
+            "Keep glowing brighter",
+            "Endless love for you",
+            "Adventure and success ahead",
+            "Ultimate celebration unlocked"
+        ];
+
         let flippedCount = 0;
-        function cutRibbon() { document.querySelector(".ribbon-wrapper").style.display = "none"; document.querySelector(".main").style.display = "flex"; typeWriter(`Happy Birthday ${name} 🎂`); generateCards(); bgMusic.play().catch(() => { }); }
-        function typeWriter(t) { let i = 0; const e = typewriter; (function w() { if (i < t.length) { e.innerHTML += t[i++]; setTimeout(w, 55) } })(); }
-        function generateCards() { grid.innerHTML = ""; wishes.forEach(x => { let c = document.createElement("div"); c.className = "card"; c.onclick = () => { if (!c.classList.contains("flip")) { c.classList.add("flip"); if (++flippedCount === 9) rockPopup.classList.add("active") } }; c.innerHTML = `<div class='front'>🎁</div><div class='back'>${x}</div>`; grid.appendChild(c); }); }
-        function closeRock() { rockPopup.classList.remove("active") }
-        function checkPassword() { if (secret.value === password) { videoModal.style.display = "flex"; birthdayVideo.currentTime = 0; birthdayVideo.play(); } else alert("Wrong secret code"); }
-        function closeVideo() { videoModal.style.display = "none"; birthdayVideo.pause(); birthdayVideo.currentTime = 0; }
-        function toggleMusic() { bgMusic.paused ? bgMusic.play() : bgMusic.pause(); }
+
+        function cutRibbon() {
+            document.querySelector(".ribbon-wrapper").style.display = "none";
+            document.querySelector(".main").style.display = "flex";
+            typeWriter(`Happy Birthday ${name} 🎂`);
+            generateCards();
+            document.getElementById("bgMusic").play().catch(() => { });
+        }
+
+        function typeWriter(text) {
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    document.getElementById("typewriter").innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, 60);
+                }
+            }
+            typing();
+        }
+
+        function generateCards() {
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+            for (let i = 0; i < 9; i++) {
+                let card = document.createElement("div");
+                card.className = "card";
+                card.onclick = function () {
+                    if (!card.classList.contains("flip")) {
+                        card.classList.add("flip");
+                        flippedCount++;
+                        if (flippedCount === 9) {
+                            document.getElementById("rockPopup").classList.add("active");
+                        }
+                    }
+                };
+
+                let front = document.createElement("div");
+                front.className = "front";
+                front.innerHTML = "🎁";
+
+                let back = document.createElement("div");
+                back.className = "back";
+                back.innerHTML = wishes[i];
+
+                card.appendChild(front);
+                card.appendChild(back);
+                grid.appendChild(card);
+                card.animate(
+
+                    [
+                        {
+                            opacity: 0,
+                            transform: "translateY(30px)"
+                        },
+
+                        {
+                            opacity: 1,
+                            transform: "translateY(0)"
+                        }
+
+                    ],
+
+                    {
+                        duration: 400,
+                        delay: i * 120,
+                        fill: "forwards"
+                    }
+
+                );
+            }
+        }
+
+        function closeRock() {
+            document.getElementById("rockPopup").classList.remove("active");
+        }
+
+        function checkPassword() {
+            if (document.getElementById("secret").value === password) {
+                document.getElementById("videoModal").style.display = "flex";
+            }
+            else {
+                alert("Wrong secret code");
+            }
+        }
+
+        function closeVideo() {
+            let modal = document.getElementById("videoModal");
+            let iframe = document.getElementById("birthdayVideo");
+            modal.style.display = "none";
+            iframe.src = iframe.src;
+        }
+
+        function toggleMusic() {
+            let music = document.getElementById("bgMusic");
+            music.paused ? music.play() : music.pause();
+        }
+
     </script>
+
 </body>
 
 </html>
