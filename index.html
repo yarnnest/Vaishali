@@ -481,26 +481,65 @@
         }
 
         /* Video Modal */
+
         .video-modal {
+
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, .85);
+
             display: none;
+
             justify-content: center;
+
             align-items: center;
-            z-index: 30;
+
+            z-index: 999;
+
+            backdrop-filter: blur(8px);
+
         }
 
-        .video-modal .video-close {
+        .video-player {
+
+            position: relative;
+
+            width: min(430px, 92vw);
+
+            animation: popup .35s;
+
+        }
+
+        #birthdayVideo {
+
+            width: 100%;
+
+            border-radius: 22px;
+
+            background: #000;
+
+            box-shadow:
+
+                0 25px 60px rgba(0, 0, 0, .45);
+
+        }
+
+        .video-close {
+
             position: absolute;
-            top: 20px;
-            right: 30px;
+
+            top: -45px;
+
+            right: 0;
+
+            font-size: 32px;
+
             color: white;
-            font-size: 28px;
+
             cursor: pointer;
+
         }
 
         /* Music Button */
@@ -713,10 +752,18 @@
 
     <div class="video-modal" id="videoModal" onclick="closeVideo()">
 
-        <iframe id="birthdayVideo" src="https://www.youtube.com/embed/UPL5MsE3KA0?autoplay=1&rel=0" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+        <div class="video-player" onclick="event.stopPropagation()">
+
+            <div class="video-close" onclick="closeVideo()">✖</div>
+
+            <video id="birthdayVideo" controls playsinline preload="metadata">
+
+                <source src="birthday-assets/birthday.mp4" type="video/mp4">
+
+            </video>
+
+        </div>
+
     </div>
 
     <div class="music-btn" onclick="toggleMusic()">
@@ -851,27 +898,32 @@
         }
 
         function checkPassword() {
-            if (document.getElementById("secret").value === password) {
-                document.getElementById("videoModal").style.display = "flex";
+
+            if (secret.value === password) {
+
+                videoModal.style.display = "flex";
+
+                birthdayVideo.currentTime = 0;
+
+                birthdayVideo.play();
+
             }
+
             else {
-                alert("Wrong secret code");
+
+                alert("Wrong Secret Code ❤️");
+
             }
+
         }
 
         function closeVideo() {
 
-            const modal = document.getElementById("videoModal");
+            videoModal.style.display = "none";
 
-            const iframe = document.getElementById("birthdayVideo");
+            birthdayVideo.pause();
 
-            modal.style.display = "none";
-
-            const src = iframe.src;
-
-            iframe.src = "";
-
-            iframe.src = src;
+            birthdayVideo.currentTime = 0;
 
         }
 
