@@ -273,27 +273,29 @@
 
             margin: auto;
 
+            perspective: 1200px;
+
         }
 
         .card {
 
+            position: relative;
+
             width: 100%;
 
-            aspect-ratio: 1;
+            aspect-ratio: 1/1;
 
-            position: relative;
+            cursor: pointer;
 
             transform-style: preserve-3d;
 
             transition: transform .8s ease;
 
-            cursor: pointer;
-
         }
 
         .card.flip {
 
-            transform: rotateY(180deg) scale(1.05);
+            transform: rotateY(180deg);
 
         }
 
@@ -303,8 +305,7 @@
 
             position: absolute;
 
-            width: 100%;
-            height: 100%;
+            inset: 0;
 
             display: flex;
 
@@ -316,27 +317,17 @@
 
             backface-visibility: hidden;
 
-            overflow: hidden;
-
-            background: rgba(255, 255, 255, .92);
-
-            backdrop-filter: blur(12px);
-
-            border: 1px solid rgba(255, 255, 255, .35);
-
-            box-shadow:
-
-                0 12px 30px rgba(0, 0, 0, .15);
+            -webkit-backface-visibility: hidden;
 
         }
 
         .front {
 
-            background: white;
+            background: #fff;
 
             color: #ff4081;
 
-            font-size: clamp(34px, 8vw, 46px);
+            font-size: 42px;
 
         }
 
@@ -348,13 +339,15 @@
 
             transform: rotateY(180deg);
 
+            -webkit-transform: rotateY(180deg);
+
             padding: 12px;
 
-            font-size: clamp(12px, 3vw, 15px);
+            text-align: center;
+
+            font-size: 14px;
 
             line-height: 1.5;
-
-            text-align: center;
 
         }
 
@@ -868,28 +861,13 @@
                 card.appendChild(front);
                 card.appendChild(back);
                 grid.appendChild(card);
-                card.animate(
 
-                    [
-                        {
-                            opacity: 0,
-                            transform: "translateY(30px)"
-                        },
+                card.style.opacity = "0";
 
-                        {
-                            opacity: 1,
-                            transform: "translateY(0)"
-                        }
-
-                    ],
-
-                    {
-                        duration: 400,
-                        delay: i * 120,
-                        fill: "forwards"
-                    }
-
-                );
+                setTimeout(() => {
+                    card.style.transition = "opacity .5s";
+                    card.style.opacity = "1";
+                }, i * 120);
             }
         }
 
