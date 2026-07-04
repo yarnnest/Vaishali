@@ -1,404 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Experience</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Birthday Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+        input {
+            -webkit-user-select: text;
+            user-select: text
+        }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            overflow-x: hidden;
+            padding-bottom: 90px
+        }
 
-body{
-background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-color:white;
-overflow-x:hidden;
-}
+        .ribbon-wrapper {
+            position: fixed;
+            inset: 0;
+            background: #ff6a88;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100
+        }
 
-/* Ribbon */
-.ribbon-wrapper{
-position:fixed;
-width:100%;
-height:100%;
-background:#ff6a88;
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:10;
-cursor:pointer;
-overflow:hidden;
-}
+        .ribbon {
+            width: min(92%, 650px);
+            height: 100px;
+            border-radius: 60px;
+            background: linear-gradient(45deg, #b30000, #ff1a1a, #b30000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .3);
+            animation: f 3s infinite
+        }
 
-.ribbon{
-position:relative;
-width:80%;
-height:120px;
-background:linear-gradient(45deg,#b30000,#ff1a1a,#b30000);
-border-radius:60px;
-display:flex;
-align-items:center;
-justify-content:center;
-animation:wave 3s infinite ease-in-out;
-box-shadow:0 15px 30px rgba(0,0,0,0.3);
-}
+        @keyframes f {
+            50% {
+                transform: translateY(-6px)
+            }
+        }
 
-.ribbon-text{
-font-size:28px;
-font-weight:700;
-animation:textWave 2s infinite ease-in-out;
-}
+        .ribbon-text {
+            font-size: clamp(20px, 5vw, 30px);
+            font-weight: 700
+        }
 
-@keyframes wave{
-0%{transform:rotate(0deg);}
-50%{transform:rotate(1deg);}
-100%{transform:rotate(0deg);}
-}
+        .main {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 80px 18px 140px;
+            width: 100%
+        }
 
-@keyframes textWave{
-0%{transform:translateY(0);}
-50%{transform:translateY(-5px);}
-100%{transform:translateY(0);}
-}
+        .typewriter {
+            font-size: clamp(24px, 6vw, 34px);
+            font-weight: 700;
+            margin-bottom: 35px;
+            min-height: 60px;
+            text-align: center
+        }
 
-/* Main */
-.main{
-display:none;
-flex-direction:column;
-align-items:center;
-padding:80px 20px 140px;
-width:100%;
-text-align:center;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: min(420px, 100%)
+        }
 
-.typewriter{
-font-size:28px;
-font-weight:600;
-margin-bottom:40px;
-min-height:40px;
-}
+        .card {
+            width: 100%;
+            aspect-ratio: 1;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: .8s
+        }
 
-/* Grid */
-.grid{
-display:grid;
-grid-template-columns:repeat(3,120px);
-gap:25px;
-justify-content:center;
-}
+        .card.flip {
+            transform: rotateY(180deg)
+        }
 
-.card{
-width:120px;
-height:120px;
-position:relative;
-transform-style:preserve-3d;
-transition:transform 0.8s;
-cursor:pointer;
-}
+        .front,
+        .back {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, .25)
+        }
 
-.card.flip{
-transform:rotateY(180deg);
-}
+        .front {
+            background: #fff;
+            color: #ff4081;
+            font-size: 42px
+        }
 
-.front,.back{
-position:absolute;
-width:100%;
-height:100%;
-border-radius:15px;
-display:flex;
-align-items:center;
-justify-content:center;
-backface-visibility:hidden;
-box-shadow:0 15px 25px rgba(0,0,0,0.3);
-}
+        .back {
+            background: #fff;
+            color: #ff4081;
+            transform: rotateY(180deg);
+            padding: 10px;
+            text-align: center;
+            font-size: 14px
+        }
 
-.front{
-background:white;
-color:#ff4081;
-font-size:40px;
-}
+        .password-section {
+            margin-top: 35px;
+            width: min(420px, 100%)
+        }
 
-.back{
-background:#fff;
-color:#ff4081;
-transform:rotateY(180deg);
-padding:10px;
-font-size:13px;
-text-align:center;
-}
+        .password-section input,
+        .password-section button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px
+        }
 
-/* Password */
-.password-section{
-margin-top:40px;
-}
+        .password-section button {
+            margin-top: 10px;
+            background: #ff4081;
+            color: #fff
+        }
 
-.password-section input{
-padding:10px;
-border:none;
-border-radius:8px;
-}
+        .rock-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #fff;
+            color: #ff4081;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            transition: .3s;
+            z-index: 20
+        }
 
-.password-section button{
-padding:10px 20px;
-border:none;
-border-radius:8px;
-background:#ff4081;
-color:white;
-cursor:pointer;
-margin-left:5px;
-}
+        .rock-popup.active {
+            transform: translate(-50%, -50%) scale(1)
+        }
 
-/* Rock Popup */
-.rock-popup{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) scale(0);
-background:white;
-color:#ff4081;
-padding:50px;
-border-radius:25px;
-font-size:30px;
-font-weight:800;
-text-align:center;
-z-index:20;
-transition:0.4s;
-}
+        .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            cursor: pointer
+        }
 
-.rock-popup.active{
-transform:translate(-50%,-50%) scale(1);
-}
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 30
+        }
 
-.close-btn{
-position:absolute;
-top:10px;
-right:15px;
-cursor:pointer;
-font-size:20px;
-}
+        .video-modal video {
+            width: min(92vw, 420px);
+            border-radius: 18px;
+            background: #000
+        }
 
-/* Video Modal */
-.video-modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.8);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:30;
-}
+        .video-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 28px;
+            cursor: pointer
+        }
 
-.video-modal iframe{
-width:90%;
-max-width:600px;
-height:350px;
-border-radius:15px;
-}
+        .music-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #fff;
+            color: #ff4081;
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer
+        }
 
-.video-close{
-position:absolute;
-top:20px;
-right:30px;
-color:white;
-font-size:28px;
-cursor:pointer;
-}
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, .25)
+        }
 
-/* Music Button */
-.music-btn{
-position:fixed;
-top:20px;
-right:20px;
-background:white;
-color:#ff4081;
-padding:8px 15px;
-border-radius:20px;
-cursor:pointer;
-font-weight:600;
-}
+        .instagram,
+        .youtube {
+            background: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 20px;
+            transition: .25s;
+        }
 
-/* Footer */
-footer{
-position:fixed;
-bottom:0;
-width:100%;
-background:rgba(0,0,0,0.25);
-padding:12px;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:15px;
-backdrop-filter:blur(6px);
-font-size:14px;
-}
+        .instagram {
+            color: #E1306C;
+        }
 
-.instagram{
-background:white;
-color:#ff4081;
-width:35px;
-height:35px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-text-decoration:none;
-font-size:18px;
-}
-</style>
+        .youtube {
+            color: #FF0000;
+        }
+
+        .instagram:hover,
+        .youtube:hover {
+            transform: scale(1.08);
+        }
+    </style>
 </head>
 
 <body>
+    <div class="ribbon-wrapper" onclick="cutRibbon()">
+        <div class="ribbon">
+            <div class="ribbon-text">Click the ribbon to cut it</div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="typewriter" id="typewriter"></div>
+        <div class="grid" id="grid"></div>
+        <div class="password-section">
+            <p>Enter secret code to unlock final surprise</p>
+            <input type="password" id="secret">
+            <button onclick="checkPassword()">Unlock</button>
+        </div>
+    </div>
+    <div class="rock-popup" id="rockPopup">
+        <div class="close-btn" onclick="closeRock()">✖</div>ROCK ONNN 🎉<br>Its Your Birthday Superstar
+    </div>
+    <div class="video-modal" id="videoModal" onclick="closeVideo()">
+        <div class="video-close">✖</div>
+        <video id="birthdayVideo" controls playsinline>
+            <source src="birthday.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="music-btn" onclick="toggleMusic()">🎵 Music</div>
+    <audio id="bgMusic" loop>
+        <source src="birthday.mp3" type="audio/mp3">
+    </audio>
 
-<div class="ribbon-wrapper" onclick="cutRibbon()">
-<div class="ribbon">
-<div class="ribbon-text">Click the ribbon to cut it</div>
-</div>
-</div>
+    <footer>
+        <span>2026 © Yarnnest</span>
 
-<div class="main">
-<div class="typewriter" id="typewriter"></div>
-<div class="grid" id="grid"></div>
+        <a class="instagram" href="https://www.instagram.com/yarn.nest_official/" target="_blank" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
 
-<div class="password-section">
-<p>Enter secret code to unlock final surprise</p>
-<input type="password" id="secret">
-<button onclick="checkPassword()">Unlock</button>
-</div>
-</div>
+        <a class="youtube" href="https://youtube.com/@yarn.nest_official?si=dlqEJ5Q9g_EhfTJz" target="_blank"
+            title="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+        </a>
 
-<div class="rock-popup" id="rockPopup">
-<div class="close-btn" onclick="closeRock()">✖</div>
-ROCK ONNN 🎉  
-<br>Its Your Birthday Superstar
-</div>
+    </footer>
 
-<div class="video-modal" id="videoModal" onclick="closeVideo()">
-<div class="video-close">✖</div>
-<iframe id="birthdayVideo"
-src="https://www.youtube.com/embed/ITBRCHsR1PU"
-frameborder="0"
-allow="autoplay; encrypted-media"
-allowfullscreen>
-</iframe>
-</div>
-
-<div class="music-btn" onclick="toggleMusic()">Music</div>
-
-<audio id="bgMusic" loop>
-<source src="birthday.mp3" type="audio/mp3">
-</audio>
-
-<footer>
-<span>2026 @ Yarnnest</span>
-<a class="instagram" href="https://www.instagram.com/yarn.nest_official/" target="_blank">📷</a>
-</footer>
-
-<script>
-
-const name="Vaishali";
-const password="yarnnest";
-
-const wishes=[
-"You are my greatest blessing ❤️",
-"Your smile is my favorite sight",
-"More dreams more victories",
-"Stay fearless always",
-"You deserve everything beautiful",
-"Keep glowing brighter",
-"Endless love for you",
-"Adventure and success ahead",
-"Ultimate celebration unlocked"
-];
-
-let flippedCount=0;
-
-function cutRibbon(){
-document.querySelector(".ribbon-wrapper").style.display="none";
-document.querySelector(".main").style.display="flex";
-typeWriter(`Happy Birthday ${name} 🎂`);
-generateCards();
-document.getElementById("bgMusic").play();
-}
-
-function typeWriter(text){
-let i=0;
-function typing(){
-if(i<text.length){
-document.getElementById("typewriter").innerHTML+=text.charAt(i);
-i++;
-setTimeout(typing,60);
-}
-}
-typing();
-}
-
-function generateCards(){
-const grid=document.getElementById("grid");
-grid.innerHTML="";
-for(let i=0;i<9;i++){
-let card=document.createElement("div");
-card.className="card";
-card.onclick=function(){
-if(!card.classList.contains("flip")){
-card.classList.add("flip");
-flippedCount++;
-if(flippedCount===9){
-document.getElementById("rockPopup").classList.add("active");
-}
-}
-};
-
-let front=document.createElement("div");
-front.className="front";
-front.innerHTML="🎁";
-
-let back=document.createElement("div");
-back.className="back";
-back.innerHTML=wishes[i];
-
-card.appendChild(front);
-card.appendChild(back);
-grid.appendChild(card);
-}
-}
-
-function closeRock(){
-document.getElementById("rockPopup").classList.remove("active");
-}
-
-function checkPassword(){
-if(document.getElementById("secret").value===password){
-document.getElementById("videoModal").style.display="flex";
-}
-else{
-alert("Wrong secret code");
-}
-}
-
-function closeVideo(){
-let modal=document.getElementById("videoModal");
-let iframe=document.getElementById("birthdayVideo");
-modal.style.display="none";
-iframe.src=iframe.src;
-}
-
-function toggleMusic(){
-let music=document.getElementById("bgMusic");
-music.paused?music.play():music.pause();
-}
-
-</script>
-
+    <script>
+        const name = "Vaishali", password = "yarnnest";
+        const wishes = ["You are my greatest blessing ❤️", "Your smile is my favorite sight", "More dreams more victories", "Stay fearless always", "You deserve everything beautiful", "Keep glowing brighter", "Endless love for you", "Adventure and success ahead", "Ultimate celebration unlocked"];
+        let flippedCount = 0;
+        function cutRibbon() { document.querySelector(".ribbon-wrapper").style.display = "none"; document.querySelector(".main").style.display = "flex"; typeWriter(`Happy Birthday ${name} 🎂`); generateCards(); bgMusic.play().catch(() => { }); }
+        function typeWriter(t) { let i = 0; const e = typewriter; (function w() { if (i < t.length) { e.innerHTML += t[i++]; setTimeout(w, 55) } })(); }
+        function generateCards() { grid.innerHTML = ""; wishes.forEach(x => { let c = document.createElement("div"); c.className = "card"; c.onclick = () => { if (!c.classList.contains("flip")) { c.classList.add("flip"); if (++flippedCount === 9) rockPopup.classList.add("active") } }; c.innerHTML = `<div class='front'>🎁</div><div class='back'>${x}</div>`; grid.appendChild(c); }); }
+        function closeRock() { rockPopup.classList.remove("active") }
+        function checkPassword() { if (secret.value === password) { videoModal.style.display = "flex"; birthdayVideo.currentTime = 0; birthdayVideo.play(); } else alert("Wrong secret code"); }
+        function closeVideo() { videoModal.style.display = "none"; birthdayVideo.pause(); birthdayVideo.currentTime = 0; }
+        function toggleMusic() { bgMusic.paused ? bgMusic.play() : bgMusic.pause(); }
+    </script>
 </body>
+
 </html>
